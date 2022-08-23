@@ -31,4 +31,12 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    public void changePassword(String password) {
+        this.password = password;
+    }
+
+    public void changeEmail(String email) {
+        this.email = email;
+    }
+
 }

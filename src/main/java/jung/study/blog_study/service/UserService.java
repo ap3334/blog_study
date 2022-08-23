@@ -13,4 +13,7 @@ public interface UserService {
 
     Page<User> getAllUsers(int page);
 
+    int saveUser(User user);
+
+    void deleteUser(int id);
 }

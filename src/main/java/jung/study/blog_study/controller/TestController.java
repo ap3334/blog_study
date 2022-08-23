@@ -10,6 +10,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
@@ -42,6 +43,29 @@ public class TestController {
         Page<User> allUsers = userService.getAllUsers(page);
 
         return allUsers;
+
+    }
+
+    @PutMapping("/user/modify/{id}")
+    @Transactional
+    public User modifyUser(@PathVariable int id, @RequestBody User requestUser) {
+
+        User user = userService.getUser(id);
+
+        user.changePassword(requestUser.getPassword());
+        user.changeEmail(user.getEmail());
+
+//        userService.saveUser(user);
+
+        return user;
+    }
+
+    @DeleteMapping("/user/delete/{id}")
+    public List<User> deleteUser(@PathVariable int id) {
+
+        userService.deleteUser(id);
+
+        return userService.getAllUsers();
 
     }
 
