@@ -2,6 +2,7 @@ package jung.study.blog_study.entity;
 
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@DynamicInsert
 public class User extends BaseEntity {
 
     @Id
@@ -26,8 +28,6 @@ public class User extends BaseEntity {
     @Column(nullable = false, length = 50)
     private String email;
 
-    // TODO default value로 enum을 설정할 수 있는 방법은 없을까?
-    @Column
     @Enumerated(EnumType.STRING)
     private Role role;
 
