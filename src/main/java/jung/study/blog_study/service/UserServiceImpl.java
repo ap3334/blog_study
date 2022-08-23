@@ -3,6 +3,9 @@ package jung.study.blog_study.service;
 import jung.study.blog_study.entity.User;
 import jung.study.blog_study.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,6 +35,17 @@ public class UserServiceImpl implements UserService {
         List<User> allUsers = userRepository.findAll();
 
         return allUsers;
+    }
+
+    @Override
+    public Page<User> getAllUsers(int page) {
+
+        Pageable pageable = PageRequest.of(page, 10);
+
+        Page<User> allUsers = userRepository.findAll(pageable);
+
+        return allUsers;
+
     }
 
 }
