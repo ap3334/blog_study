@@ -4,13 +4,14 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = "user")
+@ToString(exclude = {"user", "reply"})
 public class Board extends BaseEntity {
 
     @Id
@@ -28,5 +29,8 @@ public class Board extends BaseEntity {
 
     @ManyToOne
     private User user;
+
+    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER)
+    private List<Reply> reply;
 
 }

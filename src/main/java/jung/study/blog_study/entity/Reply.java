@@ -22,7 +22,7 @@ public class Reply extends BaseEntity {
     @ManyToOne
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Board board;
 
 }
