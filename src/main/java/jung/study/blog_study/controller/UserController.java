@@ -3,6 +3,8 @@ package jung.study.blog_study.controller;
 import jung.study.blog_study.dto.UserDto;
 import jung.study.blog_study.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,12 +32,13 @@ public class UserController {
     }
 
     @PostMapping("/join")
-    public String saveUser(UserDto user) {
+    public ResponseEntity<Integer> saveUser(@RequestBody UserDto user) {
+
+        System.out.println(user);
 
         int id = userService.saveUser(user);
 
-        // TODO 마이페이지로 이동하게 수정 필요
-        return "redirect:/board";
+        return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
 }
