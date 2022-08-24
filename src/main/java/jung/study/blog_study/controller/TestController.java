@@ -61,11 +61,9 @@ public class TestController {
     }
 
     @DeleteMapping("/user/delete/{id}")
-    public List<User> deleteUser(@PathVariable int id) {
+    public String deleteUser(@PathVariable int id) {
 
-        userService.deleteUser(id);
-
-        return userService.getAllUsers();
+        return userService.deleteUser(id);
 
     }
 

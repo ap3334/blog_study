@@ -3,6 +3,7 @@ package jung.study.blog_study.service;
 import jung.study.blog_study.entity.User;
 import jung.study.blog_study.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -57,9 +58,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(int id) {
+    public String deleteUser(int id) {
 
-        userRepository.deleteById(id);
+        try {
+            userRepository.deleteById(id);
+        }  catch (EmptyResultDataAccessException e) {
+            return "해당 유저는 존재하지 않습니다.";
+        }
+
+        return "해당 유저는 삭제되었습니다. id =  " + id;
 
     }
 
