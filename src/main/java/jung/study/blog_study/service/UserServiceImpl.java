@@ -1,5 +1,7 @@
 package jung.study.blog_study.service;
 
+import jung.study.blog_study.dto.UserDto;
+import jung.study.blog_study.entity.Role;
 import jung.study.blog_study.entity.User;
 import jung.study.blog_study.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -50,7 +52,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int saveUser(User user) {
+    public int saveUser(UserDto userDto) {
+
+        userDto.setRole(Role.USER);
+
+        User user = dtoToEntity(userDto);
+
+//        System.out.println(user);
 
         userRepository.save(user);
 
