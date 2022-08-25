@@ -58,11 +58,10 @@ public class UserServiceImpl implements UserService {
 
         User user = dtoToEntity(userDto);
 
-//        System.out.println(user);
-
         userRepository.save(user);
 
         return user.getId();
+
     }
 
     @Override
