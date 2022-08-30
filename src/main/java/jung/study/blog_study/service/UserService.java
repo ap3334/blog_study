@@ -18,6 +18,8 @@ public interface UserService {
 
     String deleteUser(int id);
 
+    UserDto loginUser(String username, String password);
+
     default User dtoToEntity(UserDto dto) {
 
         User entity = User.builder()
@@ -29,6 +31,20 @@ public interface UserService {
                 .build();
 
         return entity;
+
+    }
+
+    default UserDto entityToDto(User entity) {
+
+        UserDto dto = UserDto.builder()
+                .id(entity.getId())
+                .username(entity.getUsername())
+                .email(entity.getEmail())
+                .password(entity.getPassword())
+                .role(entity.getRole())
+                .build();
+
+        return dto;
 
     }
 

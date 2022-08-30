@@ -10,10 +10,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Supplier;
 
 @Service
 @RequiredArgsConstructor
@@ -51,6 +50,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Transactional
     @Override
     public int saveUser(UserDto userDto) {
 
@@ -74,6 +74,16 @@ public class UserServiceImpl implements UserService {
         }
 
         return "해당 유저는 삭제되었습니다. id =  " + id;
+
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public UserDto loginUser(String username, String password) {
+
+        User user = userRepository.findUserByUsernameAndPassword(username, password);
+
+        return entityToDto(user);
 
     }
 

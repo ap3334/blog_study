@@ -20,8 +20,18 @@
   <div class="nav-wrapper container">
     <a id="logo-container" href="/" class="brand-logo">BLOG</a>
     <ul class="right hide-on-med-and-down">
-      <li><a href="/user/login">로그인</a></li>
-      <li><a href="/user/join">회원가입</a></li>
+
+      <th:block th:if="${session.principal == null}">
+        <li><a href="/user/login">로그인</a></li>
+        <li><a href="/user/join">회원가입</a></li>
+      </th:block>
+
+      <th:block th:if="${session.principal != null}">
+        <li><a href="/board/write">글쓰기</a></li>
+        <li><a href="/user/myPage">마이페이지</a></li>
+        <li><a href="/user/logout">로그아웃</a></li>
+      </th:block>
+
     </ul>
   </div>
 </nav>
