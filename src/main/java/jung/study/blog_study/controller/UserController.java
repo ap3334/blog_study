@@ -5,6 +5,7 @@ import jung.study.blog_study.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,25 +21,21 @@ public class UserController {
 
     private final UserService userService;
 
-    private final HttpSession session;
-
-    @GetMapping("/login")
+    @GetMapping("/auth/login")
     public String loginPage() {
 
         return "/user/login";
     }
 
 
-    @GetMapping("/join")
+    @GetMapping("/auth/join")
     public String joinPage() {
 
         return "/user/join";
     }
 
-    @PostMapping("/join")
+    @PostMapping("/auth/join")
     public ResponseEntity<Integer> join(@RequestBody UserDto user) {
-
-        System.out.println(user);
 
         int id = userService.saveUser(user);
 
@@ -48,6 +45,8 @@ public class UserController {
 
 
 
+/*
+    // 시큐리티 없이 로그인
     @PostMapping("/login")
     public ResponseEntity<Integer> login(@RequestBody UserDto user) {
 
@@ -62,5 +61,6 @@ public class UserController {
 
 
     }
+*/
 
 }

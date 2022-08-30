@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<th:block th:fragment="fragment-header">
+<div th:fragment="fragment-header">
 
 <head>
   <meta charset="UTF-8">
@@ -21,16 +21,16 @@
     <a id="logo-container" href="/" class="brand-logo">BLOG</a>
     <ul class="right hide-on-med-and-down">
 
-      <th:block th:if="${session.principal == null}">
-        <li><a href="/user/login">로그인</a></li>
-        <li><a href="/user/join">회원가입</a></li>
-      </th:block>
+      <div sec:authorize="!isAuthenticated()">
+        <li><a href="/user/auth/login">로그인</a></li>
+        <li><a href="/user/auth/join">회원가입</a></li>
+      </div>
 
-      <th:block th:if="${session.principal != null}">
+      <div sec:authorize="isAuthenticated()">
         <li><a href="/board/write">글쓰기</a></li>
         <li><a href="/user/myPage">마이페이지</a></li>
         <li><a href="/user/logout">로그아웃</a></li>
-      </th:block>
+      </div>
 
     </ul>
   </div>

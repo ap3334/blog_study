@@ -9,6 +9,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,8 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+
+    private final BCryptPasswordEncoder encoder;
 
     @Override
     public User getUser(int id) {
@@ -54,6 +57,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public int saveUser(UserDto userDto) {
 
+        String encPassword = encoder.encode(userDto.getPassword());
+        userDto.setPassword(encPassword);
+
         userDto.setRole(Role.USER);
 
         User user = dtoToEntity(userDto);
@@ -77,6 +83,9 @@ public class UserServiceImpl implements UserService {
 
     }
 
+
+/*
+    // 시큐리티 없이 로그인
     @Transactional(readOnly = true)
     @Override
     public UserDto loginUser(String username, String password) {
@@ -86,6 +95,7 @@ public class UserServiceImpl implements UserService {
         return entityToDto(user);
 
     }
+*/
 
 
 }

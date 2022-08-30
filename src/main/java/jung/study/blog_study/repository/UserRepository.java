@@ -9,6 +9,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-    User findUserByUsernameAndPassword(String username, String password);
+    // 시큐리티 없이 로그인
+//    User findUserByUsernameAndPassword(String username, String password);
 
 }

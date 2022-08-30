@@ -3,9 +3,9 @@ let index = {
         $("#join-btn").on("click", () => {
             this.join();
         });
-        $("#login-btn").on("click", () => {
+        /*$("#login-btn").on("click", () => {
             this.login();
-        });
+        });*/
     },
 
     join: function () {
@@ -16,9 +16,10 @@ let index = {
             email: $("#email").val()
         };
 
+
       $.ajax({
           type: "POST",
-          url: "/user/join",
+          url: "/user/auth/join",
           data: JSON.stringify(data),
           contentType: "application/json; charset=utf-8",
           dataType: "json",
@@ -37,7 +38,7 @@ let index = {
     },
 
 
-    login: function () {
+    /*login: function () {
 
         var data = {
             username: $("#user_name").val(),
@@ -46,7 +47,7 @@ let index = {
 
         $.ajax({
             type: "POST",
-            url: "/user/login",
+            url: "/user/auth/login",
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -62,7 +63,7 @@ let index = {
             }
         })
 
-    },
+    },*/
 
 };
 

@@ -18,7 +18,8 @@ public interface UserService {
 
     String deleteUser(int id);
 
-    UserDto loginUser(String username, String password);
+    // 시큐리티 없이 로그인
+    // UserDto loginUser(String username, String password);
 
     default User dtoToEntity(UserDto dto) {
 
