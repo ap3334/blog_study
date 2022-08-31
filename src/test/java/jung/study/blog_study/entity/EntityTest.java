@@ -1,6 +1,6 @@
 package jung.study.blog_study.entity;
 
-import jung.study.blog_study.repository.UserRepository;
+import jung.study.blog_study.repository.user.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:replace="/fragments/header.html :: fragment-header"></div>
+
+<div class="container">
+
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+
+    <div class="row">
+
+        <form class="col s12" method="post">
+
+            <div class="row">
+                <div class="input-field col s6">
+                    <input id="title" type="text" class="validate" name="title">
+                    <label for="title">Title</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div id="content" class="editor" name="content"></div>
+            </div>
+
+            <button id="write-btn" class="btn waves-effect waves-light" type="button" name="action">Save
+                <i class="material-icons right">send</i>
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script src="/js/board/board.js"></script>
+
+<div th:replace="/fragments/footer.html :: fragment-footer"></div>

@@ -13,6 +13,9 @@
   <link href="/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 
+  <!-- Toast UI Editor -->
+  <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+
 </head>
 <body>
 
@@ -22,14 +25,14 @@
     <ul class="right hide-on-med-and-down">
 
       <div sec:authorize="!isAuthenticated()">
-        <li><a href="/user/auth/login">로그인</a></li>
-        <li><a href="/user/auth/join">회원가입</a></li>
+        <li><a th:href="@{/user/auth/login}">로그인</a></li>
+        <li><a th:href="@{/user/auth/join}">회원가입</a></li>
       </div>
 
       <div sec:authorize="isAuthenticated()">
-        <li><a href="/board/write">글쓰기</a></li>
-        <li><a href="/user/myPage">마이페이지</a></li>
-        <li><a href="/logout">로그아웃</a></li>
+        <li><a th:href="@{/board/write}">글쓰기</a></li>
+        <li><a th:href="@{/user/myPage}">마이페이지</a></li>
+        <li><a th:href="@{/logout}">로그아웃</a></li>
       </div>
 
     </ul>

@@ -1,9 +1,9 @@
-package jung.study.blog_study.service;
+package jung.study.blog_study.service.user;
 
 import jung.study.blog_study.dto.UserDto;
 import jung.study.blog_study.entity.Role;
 import jung.study.blog_study.entity.User;
-import jung.study.blog_study.repository.UserRepository;
+import jung.study.blog_study.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;

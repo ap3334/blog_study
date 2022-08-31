@@ -1,4 +1,4 @@
-package jung.study.blog_study.repository;
+package jung.study.blog_study.repository.user;
 
 import jung.study.blog_study.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;

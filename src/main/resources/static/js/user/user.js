@@ -28,7 +28,7 @@ let index = {
               alert("회원가입이 완료되었습니다.");
 
               // TODO 마이페이지로 이동하게 수정 필요
-              location.href = "/board";
+              location.href = "/";
 
           },
           error: function (error) {

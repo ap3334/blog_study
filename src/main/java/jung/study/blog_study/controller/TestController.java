@@ -1,13 +1,9 @@
 package jung.study.blog_study.controller;
 
 import jung.study.blog_study.entity.User;
-import jung.study.blog_study.repository.UserRepository;
-import jung.study.blog_study.service.UserService;
-import lombok.Getter;
+import jung.study.blog_study.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;

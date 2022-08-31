@@ -1,8 +1,7 @@
 package jung.study.blog_study.config.auth;
 
 import jung.study.blog_study.entity.User;
-import jung.study.blog_study.repository.UserRepository;
-import lombok.AllArgsConstructor;
+import jung.study.blog_study.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -2,12 +2,14 @@ package jung.study.blog_study.config.auth;
 
 import jung.study.blog_study.entity.User;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+@Getter
 @AllArgsConstructor
 public class PrincipalDetail implements UserDetails {
 

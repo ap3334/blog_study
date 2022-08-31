@@ -1,4 +1,4 @@
-package jung.study.blog_study.service;
+package jung.study.blog_study.service.user;
 
 import jung.study.blog_study.dto.UserDto;
 import jung.study.blog_study.entity.User;
