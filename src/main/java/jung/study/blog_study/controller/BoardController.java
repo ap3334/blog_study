@@ -59,14 +59,33 @@ public class BoardController {
     }
 
     @GetMapping("/detail")
-    public String showBoard(int id, Model model) {
+    public String showBoard(int id, Model model, @AuthenticationPrincipal PrincipalDetail principalDetail) {
+
+        BoardDto boardDto = boardService.getBoardById(id);
+
+        model.addAttribute("board", boardDto);
+        model.addAttribute("member", principalDetail);
+
+        return "/board/detail";
+
+    }
+
+    @GetMapping("/modify")
+    public String modifyPage(int id, Model model) {
 
         BoardDto boardDto = boardService.getBoardById(id);
 
         model.addAttribute("board", boardDto);
 
-        return "/board/detail";
+        return "/board/modify";
+    }
 
+    @PostMapping("/modify")
+    public ResponseEntity<Integer> modifySave(@RequestBody BoardDto boardDto, @AuthenticationPrincipal PrincipalDetail principalDetail) {
+
+        int id = boardService.modifyWrite(boardDto);
+
+        return new ResponseEntity<>(200, HttpStatus.OK);
     }
 
 

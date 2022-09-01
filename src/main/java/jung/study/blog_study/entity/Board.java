@@ -33,4 +33,13 @@ public class Board extends BaseEntity {
     @OneToMany(mappedBy = "board", fetch = FetchType.EAGER)
     private List<Reply> reply;
 
+    public void changeTitle(String title) {
+        this.title = title;
+    }
+
+
+    public void changeContent(String content) {
+        this.content = content;
+    }
+
 }

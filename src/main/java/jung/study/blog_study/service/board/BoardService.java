@@ -14,4 +14,6 @@ public interface BoardService {
     Page<BoardDto> getAll(int page);
 
     BoardDto getBoardById(int id);
+
+    int modifyWrite(BoardDto boardDto);
 }

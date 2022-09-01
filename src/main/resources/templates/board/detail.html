@@ -22,8 +22,11 @@
         <button id="list-btn" class="btn waves-effect waves-light" type="button" name="action">LIST
         </button>
 
-        <button id="modify-btn" class="btn waves-effect waves-light" type="button" name="action">MODIFY
-        </button>
+        <th:block th:if="${board.username == member.username}">
+            <button id="modify-btn" class="btn waves-effect waves-light" type="button" name="action">MODIFY</button>
+        </th:block>
+
+        <input id="board-id" type="hidden" th:value="${board.id}">
 
     </div>
 

@@ -58,6 +58,20 @@ public class BoardServiceImpl implements BoardService {
         return entityToDto(board);
     }
 
+    @Override
+    public int modifyWrite(BoardDto boardDto) {
+
+        Board board = boardRepository.findById(boardDto.getId()).orElseThrow(() -> new IllegalArgumentException("해당하는 게시글이 존재하지 않습니다."));
+
+        board.changeTitle(boardDto.getTitle());
+        board.changeContent(boardDto.getContent());
+
+        boardRepository.save(board);
+
+        return board.getId();
+
+    }
+
     private BoardDto entityToDto(Board board) {
 
         BoardDto dto = BoardDto.builder()
