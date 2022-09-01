@@ -19,4 +19,26 @@
     </div>
 </div>
 
+<div class="container center">
+    <ul class="pagination">
+
+        <th:block th:if="${boards.hasPrevious()}">
+            <li class="waves-effect"><a th:href="@{/board/auth/list(page = ${boards.number - 1})}"><i class="material-icons">chevron_left</i></a></li>
+        </th:block>
+        <th:block th:if="${!boards.hasPrevious()}">
+            <li class="disabled"><a th:href="@{/board/auth/list(page = ${boards.number - 1})}"><i class="material-icons">chevron_left</i></a></li>
+        </th:block>
+
+        <li>[[${boards.number + 1}]]</li>
+
+        <th:block th:if="${boards.hasNext()}">
+            <li class="waves-effect"><a th:href="@{/board/auth/list(page = ${boards.number + 1})}"><i class="material-icons">chevron_right</i></a></li>
+        </th:block>
+        <th:block th:if="${!boards.hasNext()}">
+            <li class="disabled"><a th:href="@{/board/auth/list(page = ${boards.number + 1})}"><i class="material-icons">chevron_right</i></a></li>
+        </th:block>
+
+    </ul>
+</div>
+
 <div th:replace="/fragments/footer.html :: fragment-footer"></div>

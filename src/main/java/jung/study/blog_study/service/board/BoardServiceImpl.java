@@ -6,6 +6,10 @@ import jung.study.blog_study.entity.User;
 import jung.study.blog_study.repository.board.BoardRepository;
 import jung.study.blog_study.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,9 +40,11 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<BoardDto> getAll() {
+    public Page<BoardDto> getAll(int page) {
 
-        List<BoardDto> boardDtos = boardRepository.findAll().stream().map(board -> entityToDto(board)).collect(Collectors.toList());
+        Pageable pageable = PageRequest.of(page, 4, Sort.by("regDate").descending());
+
+        Page<BoardDto> boardDtos = boardRepository.findAll(pageable).map(board -> entityToDto(board));
 
         return boardDtos;
     }
