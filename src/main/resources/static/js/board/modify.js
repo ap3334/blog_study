@@ -31,7 +31,7 @@ let index = {
 
 
       $.ajax({
-          type: "POST",
+          type: "PUT",
           url: "/board/modify",
           data: JSON.stringify(data),
           contentType: "application/json; charset=utf-8",
@@ -55,7 +55,7 @@ let index = {
 
         $.ajax({
             url: "/board/remove",
-            type: "POST",
+            type: "DELETE",
             data: JSON.stringify(id),
             contentType: "application/json; charset=utf-8",
             dataType: "json",

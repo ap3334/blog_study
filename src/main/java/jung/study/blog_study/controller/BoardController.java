@@ -80,7 +80,7 @@ public class BoardController {
         return "/board/modify";
     }
 
-    @PostMapping("/modify")
+    @PutMapping("/modify")
     public ResponseEntity<Integer> modifySave(@RequestBody BoardDto boardDto, @AuthenticationPrincipal PrincipalDetail principalDetail) {
 
         int id = boardService.modifyWrite(boardDto);
@@ -88,7 +88,7 @@ public class BoardController {
         return new ResponseEntity<>(200, HttpStatus.OK);
     }
 
-    @PostMapping("/remove")
+    @DeleteMapping("/remove")
     public ResponseEntity<Integer> removeBoard(@RequestBody int id) {
 
         boardService.deleteBoard(id);
