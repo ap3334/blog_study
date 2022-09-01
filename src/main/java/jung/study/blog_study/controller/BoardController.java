@@ -58,6 +58,16 @@ public class BoardController {
         return new ResponseEntity<>(200, HttpStatus.OK);
     }
 
+    @GetMapping("/detail")
+    public String showBoard(int id, Model model) {
+
+        BoardDto boardDto = boardService.getBoardById(id);
+
+        model.addAttribute("board", boardDto);
+
+        return "/board/detail";
+
+    }
 
 
 }

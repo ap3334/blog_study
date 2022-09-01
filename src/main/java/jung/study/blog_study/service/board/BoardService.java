@@ -12,4 +12,6 @@ public interface BoardService {
     int saveContent(BoardDto boardDto, User user);
 
     Page<BoardDto> getAll(int page);
+
+    BoardDto getBoardById(int id);
 }

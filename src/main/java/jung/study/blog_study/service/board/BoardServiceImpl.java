@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,6 +48,14 @@ public class BoardServiceImpl implements BoardService {
         Page<BoardDto> boardDtos = boardRepository.findAll(pageable).map(board -> entityToDto(board));
 
         return boardDtos;
+    }
+
+    @Override
+    public BoardDto getBoardById(int id) {
+
+        Board board = boardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당하는 게시글이 존재하지 않습니다."));
+
+        return entityToDto(board);
     }
 
     private BoardDto entityToDto(Board board) {

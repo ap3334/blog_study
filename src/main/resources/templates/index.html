@@ -7,13 +7,16 @@
     <div class="col s12 m7">
         <div class="card vertical">
             <div class="card card-stacked" th:each="board : ${boards}">
-                <div class="card-content">
-                    <p>[[${board.title}]]</p>
-                </div>
-                <div class="card-action">
-                    <a href="#">[[${board.username}]]</a>
-                </div>
+                <a th:href="@{/board/detail(id = ${board.id})}">
+                    <div class="card-content">
+                        <p>[[${board.title}]]</p>
+                    </div>
+                    <div class="card-action">
+                        <a href="#">[[${board.username}]]</a>
+                    </div>
+                </a>
             </div>
+
         </div>
 
     </div>
