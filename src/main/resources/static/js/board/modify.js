@@ -14,6 +14,9 @@ let index = {
         $("#write-btn").on("click", () => {
             this.write();
         });
+        $("#remove-btn").on("click", () => {
+            this.remove();
+        });
     },
 
     write: function () {
@@ -45,6 +48,28 @@ let index = {
           }
       });
     },
+
+    remove: function () {
+
+        var id = $("#board-id").val();
+
+        $.ajax({
+            url: "/board/remove",
+            type: "POST",
+            data: JSON.stringify(id),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                alert("글이 삭제되었습니다.");
+
+                location.href = "/";
+            },
+            error: function (error) {
+                alert(JSON.stringify(error));
+            }
+        })
+
+    }
 
 };
 

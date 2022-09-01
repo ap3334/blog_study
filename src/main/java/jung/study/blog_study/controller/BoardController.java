@@ -88,5 +88,13 @@ public class BoardController {
         return new ResponseEntity<>(200, HttpStatus.OK);
     }
 
+    @PostMapping("/remove")
+    public ResponseEntity<Integer> removeBoard(@RequestBody int id) {
+
+        boardService.deleteBoard(id);
+
+        return new ResponseEntity<>(200, HttpStatus.OK);
+    }
+
 
 }

@@ -72,6 +72,16 @@ public class BoardServiceImpl implements BoardService {
 
     }
 
+    @Override
+    public void deleteBoard(int id) {
+
+        try {
+            boardRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("해당하는 글을 삭제할 수 없습니다.");
+        }
+    }
+
     private BoardDto entityToDto(Board board) {
 
         BoardDto dto = BoardDto.builder()

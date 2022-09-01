@@ -16,4 +16,6 @@ public interface BoardService {
     BoardDto getBoardById(int id);
 
     int modifyWrite(BoardDto boardDto);
+
+    void deleteBoard(int id);
 }
