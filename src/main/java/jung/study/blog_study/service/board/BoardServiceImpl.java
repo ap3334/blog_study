@@ -10,6 +10,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
@@ -30,6 +33,30 @@ public class BoardServiceImpl implements BoardService {
         boardRepository.save(board);
 
         return board.getId();
+    }
+
+    @Override
+    public List<BoardDto> getAll() {
+
+        List<BoardDto> boardDtos = boardRepository.findAll().stream().map(board -> entityToDto(board)).collect(Collectors.toList());
+
+        return boardDtos;
+    }
+
+    private BoardDto entityToDto(Board board) {
+
+        BoardDto dto = BoardDto.builder()
+                .id(board.getId())
+                .title(board.getTitle())
+                .content(board.getContent())
+                .username(board.getUser().getUsername())
+                .count(board.getCount())
+                .regDate(board.getRegDate())
+                .modDate(board.getModDate())
+                .build();
+
+        return dto;
+
     }
 
     private Board dtoToEntity(BoardDto dto) {

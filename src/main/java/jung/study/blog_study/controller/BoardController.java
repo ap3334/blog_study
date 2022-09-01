@@ -9,10 +9,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/board")
@@ -21,9 +24,16 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    @GetMapping("")
-    public String index() {
-        return "index";
+    @GetMapping("/auth/list")
+    public String index(Model model) {
+
+        List<BoardDto> boards = boardService.getAll();
+
+        System.out.println(boards);
+
+        model.addAttribute("boards", boards);
+
+        return "/index";
     }
 
     @GetMapping("/write")
