@@ -3,6 +3,9 @@ let index = {
         $("#join-btn").on("click", () => {
             this.join();
         });
+        $("#modify-btn").on("click", () => {
+            this.modify();
+        });
         /*$("#login-btn").on("click", () => {
             this.login();
         });*/
@@ -37,6 +40,34 @@ let index = {
       });
     },
 
+    modify: function () {
+
+        var data = {
+            username: $("#user_name").val(),
+            password: $("#password").val(),
+            email: $("#email").val()
+        };
+
+        $.ajax({
+            type: "PUT",
+            url: "/user/myPage",
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+
+                alert("회원 정보 수정이 완료되었습니다.");
+                alert(JSON.stringify(result));
+
+                location.href = "/user/myPage";
+
+            },
+            error: function (error) {
+                console.log(JSON.stringify(error));
+                alert("동작이 정상적으로 실행되지 않았습니다.");
+            }
+        });
+    },
 
     /*login: function () {
 

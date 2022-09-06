@@ -1,15 +1,17 @@
 package jung.study.blog_study.controller;
 
+import jung.study.blog_study.config.auth.PrincipalDetail;
+import jung.study.blog_study.config.auth.PrincipalDetailService;
 import jung.study.blog_study.dto.UserDto;
+import jung.study.blog_study.entity.User;
 import jung.study.blog_study.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -39,7 +41,25 @@ public class UserController {
         return new ResponseEntity<>(200, HttpStatus.OK);
     }
 
+    @GetMapping("/myPage")
+    public String myPage(@AuthenticationPrincipal PrincipalDetail principal, Model model) {
 
+        UserDto user = userService.findByUsername(principal.getUsername());
+
+        model.addAttribute("user", user);
+
+        return "/user/myPage";
+    }
+
+    @PutMapping("/myPage")
+    public ResponseEntity<Integer> modify(@RequestBody UserDto newUser, @AuthenticationPrincipal PrincipalDetail principal) {
+
+        System.out.println("newUser = " + newUser);
+
+        userService.modifyUser(newUser);
+
+        return new ResponseEntity<>(200, HttpStatus.OK);
+    }
 
 
 /*

@@ -9,11 +9,13 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -80,6 +82,31 @@ public class UserServiceImpl implements UserService {
         }
 
         return "해당 유저는 삭제되었습니다. id =  " + id;
+
+    }
+
+    @Override
+    public UserDto findByUsername(String username) {
+
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("해당 유저를 찾을 수 없습니다."));
+
+        return entityToDto(user);
+    }
+
+    @Transactional
+    @Override
+    public void modifyUser(UserDto userDto) {
+
+        User user = userRepository.findByUsername(userDto.getUsername()).orElseThrow(() -> new UsernameNotFoundException("해당 유저를 찾을 수 없습니다."));
+
+        if (!userDto.getPassword().equals("")) {
+            String encPassword = encoder.encode(userDto.getPassword());
+            user.changePassword(encPassword);
+            System.out.println("change pw");
+        }
+
+        user.changeEmail(userDto.getEmail());
+        System.out.println("change email");
 
     }
 

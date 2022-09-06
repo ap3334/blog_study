@@ -18,6 +18,11 @@ public interface UserService {
 
     String deleteUser(int id);
 
+    UserDto findByUsername(String username);
+
+    void modifyUser(UserDto userDto);
+
+
     // 시큐리티 없이 로그인
     // UserDto loginUser(String username, String password);
 
