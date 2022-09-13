@@ -6,12 +6,14 @@ import jung.study.blog_study.dto.UserDto;
 import jung.study.blog_study.entity.User;
 import jung.study.blog_study.service.user.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 @Controller
 @RequiredArgsConstructor
@@ -24,6 +26,32 @@ public class UserController {
     public String loginPage() {
 
         return "/user/login";
+    }
+
+    @GetMapping("/auth/kakao/callback")
+    @ResponseBody
+    public String kakaoCallback(String code) {
+
+        RestTemplate rt = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "authorization_code");
+        params.add("client_id", "261926a3e415529fb89a88f7031b67eb");
+        params.add("redirect_uri", "http://localhost:8080/user/auth/kakao/callback");
+        params.add("code", code);
+
+        HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(params, headers);
+
+        ResponseEntity<String> response = rt.exchange(
+                "https://kauth.kakao.com/oauth/token",
+                HttpMethod.POST,
+                kakaoTokenRequest,
+                String.class
+        );
+
+        return response.toString();
     }
 
 
