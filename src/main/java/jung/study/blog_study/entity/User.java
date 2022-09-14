@@ -19,7 +19,7 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false, length = 30, unique = true)
+    @Column(nullable = false, length = 100, unique = true)
     private String username;
 
     @Column(nullable = false, length = 250)
@@ -30,6 +30,8 @@ public class User extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    private String oauth;
 
     public void changePassword(String password) {
         this.password = password;

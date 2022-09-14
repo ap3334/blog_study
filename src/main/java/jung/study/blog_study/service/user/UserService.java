@@ -14,7 +14,7 @@ public interface UserService {
 
     Page<User> getAllUsers(int page);
 
-    int saveUser(UserDto userDto);
+    UserDto saveUser(UserDto userDto);
 
     String deleteUser(int id);
 
@@ -34,6 +34,7 @@ public interface UserService {
                 .email(dto.getEmail())
                 .password(dto.getPassword())
                 .role(dto.getRole())
+                .oauth(dto.getOauth())
                 .build();
 
         return entity;
@@ -48,6 +49,7 @@ public interface UserService {
                 .email(entity.getEmail())
                 .password(entity.getPassword())
                 .role(entity.getRole())
+                .oauth(entity.getOauth())
                 .build();
 
         return dto;

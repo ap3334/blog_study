@@ -25,6 +25,8 @@ public class UserDto {
 
     private Role role;
 
+    private String oauth;
+
     private LocalDateTime regDate, modDate;
 
 }

@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -57,7 +56,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public int saveUser(UserDto userDto) {
+    public UserDto saveUser(UserDto userDto) {
 
         String encPassword = encoder.encode(userDto.getPassword());
         userDto.setPassword(encPassword);
@@ -66,9 +65,9 @@ public class UserServiceImpl implements UserService {
 
         User user = dtoToEntity(userDto);
 
-        userRepository.save(user);
+        User save = userRepository.save(user);
 
-        return user.getId();
+        return entityToDto(save);
 
     }
 
@@ -88,7 +87,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto findByUsername(String username) {
 
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("해당 유저를 찾을 수 없습니다."));
+        User user = userRepository.findByUsername(username).orElse(new User());
 
         return entityToDto(user);
     }

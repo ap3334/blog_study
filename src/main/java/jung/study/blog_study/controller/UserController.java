@@ -1,13 +1,20 @@
 package jung.study.blog_study.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jung.study.blog_study.config.auth.PrincipalDetail;
-import jung.study.blog_study.config.auth.PrincipalDetailService;
 import jung.study.blog_study.dto.UserDto;
-import jung.study.blog_study.entity.User;
+import jung.study.blog_study.entity.KakaoProfile;
+import jung.study.blog_study.entity.OAuthToken;
 import jung.study.blog_study.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
@@ -20,7 +27,11 @@ import org.springframework.web.client.RestTemplate;
 @RequestMapping("/user")
 public class UserController {
 
+    @Value("${jung.key}")
+    private String adminKey;
     private final UserService userService;
+
+    private final AuthenticationManager authenticationManager;
 
     @GetMapping("/auth/login")
     public String loginPage() {
@@ -29,7 +40,6 @@ public class UserController {
     }
 
     @GetMapping("/auth/kakao/callback")
-    @ResponseBody
     public String kakaoCallback(String code) {
 
         RestTemplate rt = new RestTemplate();
@@ -51,7 +61,60 @@ public class UserController {
                 String.class
         );
 
-        return response.toString();
+        ObjectMapper objectMapper = new ObjectMapper();
+        OAuthToken oAuthToken = null;
+
+        try {
+            oAuthToken = objectMapper.readValue(response.getBody(), OAuthToken.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        RestTemplate rt2 = new RestTemplate();
+        HttpHeaders headers2 = new HttpHeaders();
+        headers2.add("Authorization", "Bearer " + oAuthToken.getAccess_token());
+        headers2.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest = new HttpEntity<>(headers2);
+
+        ResponseEntity<String> response2 = rt2.exchange(
+                "https://kapi.kakao.com/v2/user/me",
+                HttpMethod.POST,
+                kakaoProfileRequest,
+                String.class
+        );
+
+        ObjectMapper objectMapper2 = new ObjectMapper();
+        KakaoProfile kakaoProfile = null;
+
+        try {
+            kakaoProfile = objectMapper2.readValue(response2.getBody(), KakaoProfile.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+
+        UserDto userDto = UserDto.builder()
+                .username(kakaoProfile.getProperties().getNickname() + kakaoProfile.getId())
+                .password(adminKey)
+                .email(kakaoProfile.getKakao_account().getEmail())
+                .oauth("kakao")
+                .build();
+
+        System.out.println(userDto);
+
+        UserDto byUsername = userService.findByUsername(userDto.getUsername());
+
+        System.out.println(byUsername);
+
+        if (byUsername.getUsername() == null) {
+            userService.saveUser(userDto);
+        }
+
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDto.getUsername(), adminKey));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        return "redirect:/";
     }
 
 
@@ -64,7 +127,7 @@ public class UserController {
     @PostMapping("/auth/join")
     public ResponseEntity<Integer> join(@RequestBody UserDto user) {
 
-        int id = userService.saveUser(user);
+        UserDto dto = userService.saveUser(user);
 
         return new ResponseEntity<>(200, HttpStatus.OK);
     }
