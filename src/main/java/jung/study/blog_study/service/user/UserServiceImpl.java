@@ -9,6 +9,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -98,10 +99,14 @@ public class UserServiceImpl implements UserService {
 
         User user = userRepository.findByUsername(userDto.getUsername()).orElseThrow(() -> new UsernameNotFoundException("해당 유저를 찾을 수 없습니다."));
 
-        if (!userDto.getPassword().equals("")) {
-            String encPassword = encoder.encode(userDto.getPassword());
-            user.changePassword(encPassword);
-            System.out.println("change pw");
+        if (user.getOauth() == null) {
+
+            if (!userDto.getPassword().equals("")) {
+                String encPassword = encoder.encode(userDto.getPassword());
+                user.changePassword(encPassword);
+                System.out.println("change pw");
+            }
+
         }
 
         user.changeEmail(userDto.getEmail());
