@@ -31,19 +31,19 @@
         <hr/>
 
         <div class="row">
-            <label for="reply">reply</label>
-            <p name="reply" id="reply" th:each="reply : ${replies}">
-                [[${reply.content}]]
-            </p>
-        </div>
-
-        <div class="row">
             <div class="input-field col s6">
                 <input id="reply-input" type="text" class="validate" name="reply-input" placeholder="댓글을 입력해주세요.">
                 <label for="reply-input">Write Reply</label>
                 <input type="hidden" id="username" th:value="${member.username}">
                 <button type="button" class="add-reply">등록</button>
             </div>
+        </div>
+
+        <div class="row">
+            <label for="reply">reply</label>
+            <p name="reply" id="reply" th:each="reply : ${replies}">
+                [[${reply.content}]]
+            </p>
         </div>
 
     </div>
