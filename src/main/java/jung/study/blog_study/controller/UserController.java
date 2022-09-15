@@ -42,81 +42,13 @@ public class UserController {
     @GetMapping("/auth/kakao/callback")
     public String kakaoCallback(String code) {
 
-        RestTemplate rt = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("grant_type", "authorization_code");
-        params.add("client_id", "261926a3e415529fb89a88f7031b67eb");
-        params.add("redirect_uri", "http://localhost:8080/user/auth/kakao/callback");
-        params.add("code", code);
-
-        HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(params, headers);
-
-        ResponseEntity<String> response = rt.exchange(
-                "https://kauth.kakao.com/oauth/token",
-                HttpMethod.POST,
-                kakaoTokenRequest,
-                String.class
-        );
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        OAuthToken oAuthToken = null;
-
-        try {
-            oAuthToken = objectMapper.readValue(response.getBody(), OAuthToken.class);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
-        RestTemplate rt2 = new RestTemplate();
-        HttpHeaders headers2 = new HttpHeaders();
-        headers2.add("Authorization", "Bearer " + oAuthToken.getAccess_token());
-        headers2.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-
-        HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest = new HttpEntity<>(headers2);
-
-        ResponseEntity<String> response2 = rt2.exchange(
-                "https://kapi.kakao.com/v2/user/me",
-                HttpMethod.POST,
-                kakaoProfileRequest,
-                String.class
-        );
-
-        ObjectMapper objectMapper2 = new ObjectMapper();
-        KakaoProfile kakaoProfile = null;
-
-        try {
-            kakaoProfile = objectMapper2.readValue(response2.getBody(), KakaoProfile.class);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
-
-        UserDto userDto = UserDto.builder()
-                .username(kakaoProfile.getProperties().getNickname() + kakaoProfile.getId())
-                .password(adminKey)
-                .email(kakaoProfile.getKakao_account().getEmail())
-                .oauth("kakao")
-                .build();
-
-        System.out.println(userDto);
-
-        UserDto byUsername = userService.findByUsername(userDto.getUsername());
-
-        System.out.println(byUsername);
-
-        if (byUsername.getUsername() == null) {
-            userService.saveUser(userDto);
-        }
+        UserDto userDto = userService.getUserDto(code);
 
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDto.getUsername(), adminKey));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return "redirect:/";
     }
-
 
     @GetMapping("/auth/join")
     public String joinPage() {

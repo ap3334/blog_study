@@ -22,6 +22,7 @@ public interface UserService {
 
     void modifyUser(UserDto userDto);
 
+    UserDto getUserDto(String code);
 
     // 시큐리티 없이 로그인
     // UserDto loginUser(String username, String password);
