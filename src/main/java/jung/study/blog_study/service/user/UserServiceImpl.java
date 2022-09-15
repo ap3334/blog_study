@@ -130,6 +130,59 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserDto getUserDto(String code) {
+
+        OAuthToken oAuthToken = getOAuthToken(code);
+
+        KakaoProfile kakaoProfile = getKakaoProfile(oAuthToken);
+
+        UserDto userDto = getUserDto(kakaoProfile);
+
+        UserDto byUsername = findByUsername(userDto.getUsername());
+
+        if (byUsername.getUsername() == null) {
+            saveUser(userDto);
+        }
+
+        return userDto;
+    }
+
+    private UserDto getUserDto(KakaoProfile kakaoProfile) {
+        UserDto userDto = UserDto.builder()
+                .username(kakaoProfile.getProperties().getNickname() + kakaoProfile.getId())
+                .password(adminKey)
+                .email(kakaoProfile.getKakao_account().getEmail())
+                .oauth("kakao")
+                .build();
+        return userDto;
+    }
+
+    private static KakaoProfile getKakaoProfile(OAuthToken oAuthToken) {
+        RestTemplate rt2 = new RestTemplate();
+        HttpHeaders headers2 = new HttpHeaders();
+        headers2.add("Authorization", "Bearer " + oAuthToken.getAccess_token());
+        headers2.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest = new HttpEntity<>(headers2);
+
+        ResponseEntity<String> response2 = rt2.exchange(
+                "https://kapi.kakao.com/v2/user/me",
+                HttpMethod.POST,
+                kakaoProfileRequest,
+                String.class
+        );
+
+        ObjectMapper objectMapper2 = new ObjectMapper();
+        KakaoProfile kakaoProfile = null;
+
+        try {
+            kakaoProfile = objectMapper2.readValue(response2.getBody(), KakaoProfile.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return kakaoProfile;
+    }
+
+    private static OAuthToken getOAuthToken(String code) {
         RestTemplate rt = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -157,49 +210,7 @@ public class UserServiceImpl implements UserService {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-
-        RestTemplate rt2 = new RestTemplate();
-        HttpHeaders headers2 = new HttpHeaders();
-        headers2.add("Authorization", "Bearer " + oAuthToken.getAccess_token());
-        headers2.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-
-        HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest = new HttpEntity<>(headers2);
-
-        ResponseEntity<String> response2 = rt2.exchange(
-                "https://kapi.kakao.com/v2/user/me",
-                HttpMethod.POST,
-                kakaoProfileRequest,
-                String.class
-        );
-
-        ObjectMapper objectMapper2 = new ObjectMapper();
-        KakaoProfile kakaoProfile = null;
-
-        try {
-            kakaoProfile = objectMapper2.readValue(response2.getBody(), KakaoProfile.class);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
-
-        UserDto userDto = UserDto.builder()
-                .username(kakaoProfile.getProperties().getNickname() + kakaoProfile.getId())
-                .password(adminKey)
-                .email(kakaoProfile.getKakao_account().getEmail())
-                .oauth("kakao")
-                .build();
-
-        System.out.println(userDto);
-
-        UserDto byUsername = findByUsername(userDto.getUsername());
-
-        System.out.println(byUsername);
-
-        if (byUsername.getUsername() == null) {
-            saveUser(userDto);
-        }
-
-        return userDto;
+        return oAuthToken;
     }
 
 
