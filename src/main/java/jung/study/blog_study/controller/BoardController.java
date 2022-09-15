@@ -2,13 +2,12 @@ package jung.study.blog_study.controller;
 
 import jung.study.blog_study.config.auth.PrincipalDetail;
 import jung.study.blog_study.dto.BoardDto;
+import jung.study.blog_study.dto.ReplyDto;
 import jung.study.blog_study.entity.User;
 import jung.study.blog_study.service.board.BoardService;
+import jung.study.blog_study.service.reply.ReplyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,12 +24,12 @@ public class BoardController {
 
     private final BoardService boardService;
 
+    private final ReplyService replyService;
+
     @GetMapping("/auth/list")
     public String index(Model model, @RequestParam(value = "page", defaultValue = "0") int page) {
 
         Page<BoardDto> boards = boardService.getAll(page);
-
-        System.out.println(boards);
 
         model.addAttribute("boards", boards);
         model.addAttribute("page", page);
@@ -47,13 +46,9 @@ public class BoardController {
     @PostMapping("/write")
     public ResponseEntity<Integer> writeSave(@RequestBody BoardDto boardDto, @AuthenticationPrincipal PrincipalDetail principalDetail) {
 
-        System.out.println(boardDto);
-
         User user = principalDetail.getUser();
 
         int id = boardService.saveContent(boardDto, user);
-
-        System.out.println(id);
 
         return new ResponseEntity<>(200, HttpStatus.OK);
     }
@@ -62,8 +57,11 @@ public class BoardController {
     public String showBoard(int id, Model model, @AuthenticationPrincipal PrincipalDetail principalDetail) {
 
         BoardDto boardDto = boardService.getBoardById(id);
+        List<ReplyDto> replyDtoList = replyService.getRepliesByBoardId(boardDto.getId());
 
         model.addAttribute("board", boardDto);
+        model.addAttribute("replies", replyDtoList);
+
         model.addAttribute("member", principalDetail);
 
         return "/board/detail";
